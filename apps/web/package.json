@@ -12,17 +12,23 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/react": "^4.0.184",
+    "@tanstack/react-query": "^5.108.4",
     "@workspace/helpers": "*",
     "@workspace/ui": "*",
+    "ai": "^7.0.179",
     "jose": "^6.2.18",
-    "lucide-react": "^1.61.0",
+    "lucide-react": "^1.78.0",
     "next": "16.4.2",
     "next-themes": "^0.4.6",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
