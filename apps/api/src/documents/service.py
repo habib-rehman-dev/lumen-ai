@@ -104,3 +104,20 @@ async def delete_document(
     # 4) Remove the row last, so a failure above leaves a retryable record
     await db.delete(doc)
     await db.commit()
+
+
+async def resolve_searchable_ids(
+    db: AsyncSession, user_id: str, requested: list[uuid.UUID] | None
+) -> list[str]:
+    """Turns the frontend's selection into a safe list of document ids.
+    - requested=None  -> all of the user's ready documents ("select all")
+    - otherwise       -> only those that are THEIRS and READY
+    Foreign or unfinished ids are silently dropped, never trusted."""
+    query = select(Document.id).where(
+        Document.user_id == user_id,
+        Document.status == DocumentStatus.READY,
+    )
+    if requested is not None:
+        query = query.where(Document.id.in_(requested))
+    rows = await db.scalars(query)
+    return [str(i) for i in rows.all()]

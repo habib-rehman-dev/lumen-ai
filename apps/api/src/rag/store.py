@@ -22,15 +22,7 @@ def get_embed_model() -> HuggingFaceEmbedding:
     )
 
 
-# @lru_cache
-# def get_collection():
-#     """One Chroma collection holds every user's chunks.
-#     Isolation is enforced by metadata filters (user_id), not separate databases."""
-#     client = chromadb.PersistentClient(path=settings.chroma_path)
-#     return client.get_or_create_collection(
-#         COLLECTION_NAME,
-#         metadata={"hnsw:space": "cosine"},  # cosine similarity (set at creation)
-#     )
+
 
 
 @lru_cache
@@ -57,4 +49,7 @@ def get_vector_store() -> PGVectorStore:
 
 def delete_document_vectors(document_id: str) -> None:
     """Delete all chunks belonging to a source document."""
+    print(f"Deleting vectors for document {document_id}")
+    # vectore_store = get_vector_store()
+    # vectore_store.delete
     get_vector_store().delete(document_id)
