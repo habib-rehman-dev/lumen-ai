@@ -1,21 +1,5 @@
-# shadcn/ui monorepo template
+Lumen AI is a unified AI platform that brings documents, language models, and external tools into one conversational workspace. It uses retrieval-augmented generation to provide grounded answers and supports extensible model and MCP integrations.
 
-This is a Next.js monorepo template with shadcn/ui.
 
-## Adding components
-
-To add components to your app, run the following command at the root of your `web` app:
-
-```bash
-pnpm dlx shadcn@latest add button -c apps/web
 ```
-
-This will place the ui components in the `packages/ui/src/components` directory.
-
-## Using components
-
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@workspace/ui/components/button";
-```
+<!--  uv run python -c 'import time, jwt; from src.core.config import get_settings; now=int(time.time()); print(jwt.encode({"sub":"user_1","iss":"rag-frontend","aud":"rag-backend","iat":now,"exp":now+604800}, get_settings().backend_jwt_secret, algorithm="HS256"))' -->

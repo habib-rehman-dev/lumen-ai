@@ -1,19 +1,48 @@
-import { Button } from "@workspace/ui/components/button"
+// "use client";
+"use client";
+import axios from "axios";
+// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Page() {
+// interface Post {
+//   id: number;
+//   title: string;
+//   category: string;
+// }
+
+interface Data {
+message: string;
+
+}
+
+// export default function PostsPage() {
+export default function HomePage() {
+//   const [posts, setPosts] = useState<Post[]>([]);
+const [data, setData] = useState<Data | null>(null);
+const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetches from apps/web/src/app/api/posts/route.ts
+    axios.get("/api/posts")
+      .then((res) => res.data)
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p className="p-8">Loading posts...</p>;
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="text-muted-foreground font-mono text-xs">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <main className="max-w-3xl mx-auto p-8">
+      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+      <div className="grid gap-4">
+        {data && data.message}
       </div>
-    </div>
-  )
+    </main>
+  );
 }
