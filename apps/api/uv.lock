@@ -134,49 +134,6 @@ wheels = [
 ]
 
 [[package]]
-name = "api"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "aiofiles" },
-    { name = "aiosqlite" },
-    { name = "alembic" },
-    { name = "asyncpg" },
-    { name = "docx2txt" },
-    { name = "fastapi", extra = ["standard"] },
-    { name = "llama-index-core" },
-    { name = "llama-index-embeddings-huggingface" },
-    { name = "llama-index-readers-file" },
-    { name = "llama-index-vector-stores-postgres" },
-    { name = "pgvector" },
-    { name = "pydantic-settings" },
-    { name = "pyjwt" },
-    { name = "python-multipart" },
-    { name = "sqlalchemy", extra = ["asyncio"] },
-    { name = "uvicorn", extra = ["standard"] },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aiofiles", specifier = ">=25.1.0" },
-    { name = "aiosqlite", specifier = ">=0.22.1" },
-    { name = "alembic", specifier = ">=1.20.1" },
-    { name = "asyncpg", specifier = ">=0.32.0" },
-    { name = "docx2txt", specifier = ">=0.9" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.162.0" },
-    { name = "llama-index-core", specifier = ">=0.14.26" },
-    { name = "llama-index-embeddings-huggingface", specifier = ">=0.9.0" },
-    { name = "llama-index-readers-file", specifier = ">=0.8.0" },
-    { name = "llama-index-vector-stores-postgres", specifier = ">=0.10.0" },
-    { name = "pgvector", specifier = ">=0.5.1" },
-    { name = "pydantic-settings", specifier = ">=2.16.1" },
-    { name = "pyjwt", specifier = ">=2.15.1" },
-    { name = "python-multipart", specifier = ">=0.0.32" },
-    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.36,<2.1" },
-    { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
-]
-
-[[package]]
 name = "asyncpg"
 version = "0.32.0"
 source = { registry = "https://pypi.org/simple" }
@@ -951,6 +908,49 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/56/bc/186391e029c11d8288a3f365736813044dbff8123c9df9b8dd9eea5f8f3e/llama_index_workflows-2.26.1.tar.gz", hash = "sha256:bd2abd7c3730c17922fff7ba4f6302727d1874718870fbf615705bf3d7361b87", size = 160003, upload-time = "2026-10-21T20:47:11.217Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3f/27/34d80bf9cc330711767c02d95494b39c12abe40591a7415aa785d5ab650f/llama_index_workflows-2.26.1-py3-none-any.whl", hash = "sha256:b4a01ec72f2c297f85042cf34b10dd307770b93f49e2acc760e6b983ecbec0c1", size = 184547, upload-time = "2026-10-21T20:47:10.103Z" },
+]
+
+[[package]]
+name = "lumen-api"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "aiofiles" },
+    { name = "aiosqlite" },
+    { name = "alembic" },
+    { name = "asyncpg" },
+    { name = "docx2txt" },
+    { name = "fastapi", extra = ["standard"] },
+    { name = "llama-index-core" },
+    { name = "llama-index-embeddings-huggingface" },
+    { name = "llama-index-readers-file" },
+    { name = "llama-index-vector-stores-postgres" },
+    { name = "pgvector" },
+    { name = "pydantic-settings" },
+    { name = "pyjwt" },
+    { name = "python-multipart" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+    { name = "uvicorn", extra = ["standard"] },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aiofiles", specifier = ">=25.1.0" },
+    { name = "aiosqlite", specifier = ">=0.22.1" },
+    { name = "alembic", specifier = ">=1.20.1" },
+    { name = "asyncpg", specifier = ">=0.32.0" },
+    { name = "docx2txt", specifier = ">=0.9" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.162.0" },
+    { name = "llama-index-core", specifier = ">=0.14.26" },
+    { name = "llama-index-embeddings-huggingface", specifier = ">=0.9.0" },
+    { name = "llama-index-readers-file", specifier = ">=0.8.0" },
+    { name = "llama-index-vector-stores-postgres", specifier = ">=0.10.0" },
+    { name = "pgvector", specifier = ">=0.5.1" },
+    { name = "pydantic-settings", specifier = ">=2.16.1" },
+    { name = "pyjwt", specifier = ">=2.15.1" },
+    { name = "python-multipart", specifier = ">=0.0.32" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.36,<2.1" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
 ]
 
 [[package]]
