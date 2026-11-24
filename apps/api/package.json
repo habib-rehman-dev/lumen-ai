@@ -6,7 +6,7 @@
   "main": "main.py",
   "scripts": {
     "start": "uv run fastapi run src/main.py --port 8000",
-    "dev__": "uv run fastapi dev src/main.py --port 8000",
+    "dev": "uv run fastapi dev",
 
     "db:generate": "uv run alembic revision --autogenerate -m",
     "db:migrate": "uv run alembic upgrade head"

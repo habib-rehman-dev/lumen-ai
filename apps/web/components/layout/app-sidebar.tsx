@@ -1,11 +1,13 @@
 "use client";
 
+
+
 import { MoreHorizontal, SquarePen, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
+import { Skeleton } from "@workspace/ui/components/skeleton";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import {
@@ -19,7 +21,9 @@ import {
 import { useChats, useDeleteChat } from "@/hooks/use-chats";
 import type { ChatSummary } from "@/lib/api";
 
-export function AppSidebar() {
+import { UserMenu, type SidebarUser } from "@/components/layout/user-menu";
+
+export function AppSidebar({ user }: { user: SidebarUser }) {
     const pathname = usePathname();
     const router = useRouter();
     const { setOpenMobile } = useSidebar();           // closes the drawer on phones
@@ -65,12 +69,14 @@ export function AppSidebar() {
                             <SidebarMenu>
                                 {/* Loading, error and empty states */}
                                 {isLoading &&
-                                    Array.from({ length: 5 }).map((_, i) => (
-                                        <SidebarMenuItem key={i}><SidebarMenuSkeleton /></SidebarMenuItem>
+                                    // Fixed widths = identical on server and client (no Math.random)
+                                    [80, 60, 70, 50, 65].map((width, i) => (
+                                        <SidebarMenuItem key={i}>
+                                            <div className="flex h-8 items-center px-2">
+                                                <Skeleton className="h-4" style={{ width: `${width}%` }} />
+                                            </div>
+                                        </SidebarMenuItem>
                                     ))}
-                                {isError && (
-                                    <p className="px-2 text-sm text-muted-foreground">Couldn&apos;t load chats.</p>
-                                )}
                                 {chats?.length === 0 && (
                                     <p className="px-2 text-sm text-muted-foreground">No chats yet.</p>
                                 )}
@@ -105,12 +111,12 @@ export function AppSidebar() {
                 </SidebarContent>
 
                 <SidebarFooter>
-                    {/* Later: user menu / account goes here */}
-                    <div className="flex items-center justify-between px-2">
-                        <span className="text-xs text-muted-foreground">Theme</span>
-                        <ThemeToggle />
-                    </div>
-                </SidebarFooter>
+          <div className="flex items-center justify-between px-2">
+            <span className="text-xs text-muted-foreground">Theme</span>
+            <ThemeToggle />
+          </div>
+          <UserMenu user={user} />
+        </SidebarFooter>
                 <SidebarRail />  {/* thin strip on desktop to drag-toggle the sidebar */}
             </Sidebar>
 
