@@ -50,6 +50,8 @@ class Settings(BaseSettings):
     # Verify the current name in the Groq console.
     groq_rewrite_model: str = "llama-3.1-8b-instant"
 
+    internal_api_key: str
+
 
 @lru_cache  # build Settings once, reuse everywhere
 def get_settings() -> Settings:

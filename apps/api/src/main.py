@@ -18,6 +18,7 @@ from src.documents.router import router as documents_router
 from src.documents.service import resolve_searchable_ids
 from src.rag.retrieve import retrieve
 from src.rag.store import get_embed_model  # add to imports
+from src.users.router import router as users_router
 
 settings = get_settings()
 
@@ -77,4 +78,6 @@ async def debug_retrieve(
 
 
 app.include_router(documents_router)
-app.include_router(router, prefix="/chat", tags=["chat"])
+app.include_router(router, tags=["chat"])
+
+app.include_router(users_router)

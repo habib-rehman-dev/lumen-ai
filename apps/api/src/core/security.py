@@ -36,3 +36,16 @@ def get_current_user_id(
 
 # Shortcut type: use `user_id: CurrentUserId` in any endpoint
 CurrentUserId = Annotated[str, Depends(get_current_user_id)]
+
+
+import secrets
+
+from fastapi import Header  # add to the existing fastapi import line if you prefer
+
+
+def require_internal_key(x_internal_key: str | None = Header(default=None)) -> None:
+    """Only the Next.js server knows this key. Blocks direct calls from the internet."""
+    if not x_internal_key or not secrets.compare_digest(
+        x_internal_key.encode(), settings.internal_api_key.encode()  # constant-time compare
+    ):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Unauthorized")

@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import { MoreHorizontal, SquarePen, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -55,7 +53,8 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton variant="outline" onClick={() => setOpenMobile(false)} render={() => (
-                                <Link href="/"><SquarePen /> New chat</Link>
+
+                                    <Link href="/" className="flex justify-start items-center"><SquarePen /> New chat</Link>
                             )} />
 
                         </SidebarMenuItem>
@@ -111,12 +110,12 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
                 </SidebarContent>
 
                 <SidebarFooter>
-          <div className="flex items-center justify-between px-2">
-            <span className="text-xs text-muted-foreground">Theme</span>
-            <ThemeToggle />
-          </div>
-          <UserMenu user={user} />
-        </SidebarFooter>
+                    <div className="flex items-center justify-between px-2">
+                        <span className="text-xs text-muted-foreground">Theme</span>
+                        <ThemeToggle />
+                    </div>
+                    <UserMenu user={user} />
+                </SidebarFooter>
                 <SidebarRail />  {/* thin strip on desktop to drag-toggle the sidebar */}
             </Sidebar>
 

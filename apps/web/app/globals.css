@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&display=swap');
+
+
 @import "tailwindcss";
 @import "@workspace/ui/globals.css";
 @plugin "@tailwindcss/typography";
-
 /* Tell Tailwind v4 to scan your shared UI package for utility classes */
 @source "../../../packages/ui/src/**/*.{ts,tsx}";
 
