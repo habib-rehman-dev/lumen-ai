@@ -13,19 +13,28 @@ import {
 } from "@workspace/ui/components/sheet";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { useDocuments } from "@/hooks/use-documents";
-
+import { useState } from "react";
 export function DocumentsSheet() {
+    const [open, setOpen] = useState(false);
     const { selectedCount } = useDocumentSelection();
 
     return (
-        <Sheet>
-            <SheetTrigger render={() => (
-                <Button variant="outline" size="sm">
-                    <FileText /> Documents
-                    {/* How many documents the assistant will search right now */}
-                    <Badge variant="secondary">{selectedCount}</Badge>
-                </Button>
-            )} />
+        <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+                render={(props) => (
+                    <Button
+                        {...props}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        aria-expanded={open}
+                    >
+                        <FileText />
+                        Documents
+                        <Badge variant="secondary">{selectedCount}</Badge>
+                    </Button>
+                )}
+            />
 
             <SheetContent className="flex w-full flex-col gap-0 sm:max-w-md">
                 <SheetHeader>
