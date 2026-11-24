@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     retrieval_min_score: float = 0.35
 
     # Check the current model name in the Groq console; names change over time
-    groq_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "qwen/qwen3.8-27b"
     chat_history_messages: int = 10  # how many past messages the LLM sees
     llm_timeout_seconds: float = 60
 
