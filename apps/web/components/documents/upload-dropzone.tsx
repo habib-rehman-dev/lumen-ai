@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useUploadDocument } from "@/hooks/use-documents";
-import { cn } from "@/lib/utils";
+import { cn } from "@workspace/ui/lib/utils";
 
 // Keep these in sync with the backend (SUPPORTED_EXTENSIONS and max_upload_mb)
 const ACCEPT = [".pdf", ".docx", ".txt", ".md", ".csv"];

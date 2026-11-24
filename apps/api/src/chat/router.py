@@ -95,5 +95,5 @@ async def delete_chat(
         )
     )
     await db.commit()
-    if result.rowcount == 0:
+    if result.rowcount == 0: # type: ignore
         raise HTTPException(404, "Chat not found")
