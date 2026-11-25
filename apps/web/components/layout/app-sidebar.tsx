@@ -18,6 +18,7 @@ import {
 } from "@workspace/ui/components/sidebar";
 import { useChats, useDeleteChat } from "@/hooks/use-chats";
 import type { ChatSummary } from "@/lib/api";
+import { LibraryDialog } from "@/components/documents/library-dialog";
 
 import { UserMenu, type SidebarUser } from "@/components/layout/user-menu";
 
@@ -54,9 +55,12 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
                         <SidebarMenuItem>
                             <SidebarMenuButton variant="outline" onClick={() => setOpenMobile(false)} render={() => (
 
-                                    <Link href="/" className="flex justify-start items-center"><SquarePen /> New chat</Link>
+                                <Link href="/" className="flex justify-start items-center"><SquarePen /> New chat</Link>
                             )} />
 
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <LibraryDialog />
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarHeader>

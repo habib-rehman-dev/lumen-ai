@@ -40,5 +40,12 @@ export function ExistingChat({ chatId }: { chatId: string }) {
     }
 
     // key = chat id, so switching chats gives a completely fresh useChat state
-    return <ChatView key={data.id} chatId={data.id} title={data.title} initialMessages={toUIMessages(data)} />;
-}
+  return (
+    <ChatView
+      key={data.id}
+      chatId={data.id}
+      title={data.title}
+      initialMessages={toUIMessages(data)}
+      initialScope={data.document_ids}
+    />
+  );}

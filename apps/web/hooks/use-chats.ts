@@ -10,15 +10,16 @@ export function useChats() {
   return useQuery({ queryKey: qk.chats, queryFn: listChats });
 }
 
-// One chat with its messages (used when opening an old chat in F3)
 export function useChatDetail(id: string | null) {
   return useQuery({
     queryKey: qk.chat(id ?? ""),
     queryFn: () => getChat(id!),
-    enabled: !!id,  // don't fetch for a new chat
+    enabled: !!id,
+    // Never reuse an old copy when reopening a chat, so its saved documents are current
+    gcTime: 0,
+    staleTime: 0,
   });
 }
-
 export function useDeleteChat() {
   const qc = useQueryClient();
   return useMutation({
@@ -27,3 +28,4 @@ export function useDeleteChat() {
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.chats }),
   });
 }
+

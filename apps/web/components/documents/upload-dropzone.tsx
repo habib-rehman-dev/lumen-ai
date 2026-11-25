@@ -1,5 +1,5 @@
 "use client";
-
+import { ACCEPT_EXTENSIONS, MAX_UPLOAD_MB, validateUpload } from "@/lib/upload-rules";
 import { Loader2, UploadCloud } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -20,13 +20,9 @@ export function UploadDropzone() {
     // One at a time: simple, and kind to the backend
     for (const file of Array.from(files)) {
       const ext = "." + (file.name.split(".").pop() ?? "").toLowerCase();
-      // Quick client-side checks for instant feedback (the server re-checks everything)
-      if (!ACCEPT.includes(ext)) {
-        toast.error(`${file.name}: unsupported type (use ${ACCEPT.join(", ")})`);
-        continue;
-      }
-      if (file.size > MAX_MB * 1024 * 1024) {
-        toast.error(`${file.name}: larger than ${MAX_MB} MB`);
+            const problem = validateUpload(file);
+      if (problem) {
+        toast.error(`${file.name}: ${problem}`);
         continue;
       }
       try {

@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     internal_api_key: str
 
     # Maximum number of characters allowed in a question
-    MAX_QUESTION_CHARS = 8000
+    MAX_QUESTION_CHARS: int = 8000
 
 @lru_cache  # build Settings once, reuse everywhere
 def get_settings() -> Settings:

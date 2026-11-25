@@ -17,8 +17,10 @@ export type Citation = {
   score: number;
 };
 
-export type ChatSummary = { id: string; title: string; created_at: string; updated_at: string };
-
+export type ChatSummary = {
+  id: string; title: string; created_at: string; updated_at: string;
+  document_ids: string[] | null;   // null = this chat uses the whole library
+};
 export type ChatDetail = ChatSummary & {
   messages: {
     id: string;
@@ -63,3 +65,4 @@ export const getChat = async (id: string): Promise<ChatDetail> =>
 export const deleteChat = async (id: string) => {
   await check(await fetch(`/api/chats/${id}`, { method: "DELETE" }));
 };
+

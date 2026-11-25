@@ -21,7 +21,7 @@ class ChatSession(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
-
+    document_ids: Mapped[list[str] | None] = mapped_column(JSONB, default=None)
     # Deleting a session deletes its messages (but never documents)
     messages: Mapped[list["Message"]] = relationship(
         back_populates="session",

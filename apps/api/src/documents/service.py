@@ -121,3 +121,18 @@ async def resolve_searchable_ids(
         query = query.where(Document.id.in_(requested))
     rows = await db.scalars(query)
     return [str(i) for i in rows.all()]
+
+
+async def owned_document_ids(
+    db: AsyncSession, user_id: str, requested: list[uuid.UUID]
+) -> list[str]:
+    """Keeps only ids that belong to this user (any status except deleting).
+    Used before SAVING a chat's document list, so foreign ids are never stored."""
+    rows = await db.scalars(
+        select(Document.id).where(
+            Document.user_id == user_id,
+            Document.id.in_(requested),
+            Document.status != DocumentStatus.DELETING,
+        )
+    )
+    return [str(i) for i in rows.all()]

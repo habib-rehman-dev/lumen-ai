@@ -40,13 +40,20 @@ class MessageOut(BaseModel):
     created_at: datetime
 
 
+# class ChatSessionOut(BaseModel):
+#     model_config = ConfigDict(from_attributes=True)
+#     id: uuid.UUID
+#     title: str
+#     created_at: datetime
+#     updated_at: datetime
+
+
 class ChatSessionOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: uuid.UUID
     title: str
+    document_ids: list[str] | None = None   # None = whole library
     created_at: datetime
     updated_at: datetime
-
-
 class ChatSessionDetail(ChatSessionOut):
     messages: list[MessageOut]

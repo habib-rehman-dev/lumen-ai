@@ -9,7 +9,7 @@ from src.chat.stream import SSE_HEADERS, event_stream
 from src.core.config import get_settings
 from src.core.db import get_db
 from src.core.security import CurrentUserId
-from src.documents.service import resolve_searchable_ids
+from src.documents.service import owned_document_ids, resolve_searchable_ids
 from src.models import ChatSession, Message
 from src.schemas.chat import ChatRequest, ChatSessionDetail, ChatSessionOut
 
@@ -33,12 +33,21 @@ async def chat(
     if len(question) > MAX_QUESTION_CHARS:
         raise HTTPException(413, "Message too long")
 
+    # Remember which documents this chat uses (None = whole library).
+    # Only ids the user owns are kept.
+    scope = (
+        None
+        if body.document_ids is None
+        else await owned_document_ids(db, user_id, body.document_ids)
+    )
+
     # 1) Existing chat (ownership checked) or a new one titled from the question
     if body.session_id:
         session = await get_owned_session(db, user_id, body.session_id)
         history = await recent_history(db, session.id, settings.chat_history_messages)
+        session.document_ids = scope
     else:
-        session = ChatSession(user_id=user_id, title=question[:60])
+        session = ChatSession(user_id=user_id, title=question[:60], document_ids=scope)
         db.add(session)
         history = []
 
