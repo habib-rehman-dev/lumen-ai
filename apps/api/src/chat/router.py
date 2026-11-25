@@ -16,7 +16,7 @@ from src.schemas.chat import ChatRequest, ChatSessionDetail, ChatSessionOut
 settings = get_settings()
 router = APIRouter(tags=["chat"])
 
-MAX_QUESTION_CHARS = 8000
+MAX_QUESTION_CHARS = settings.MAX_QUESTION_CHARS
 
 db = Depends(get_db)
 
@@ -95,5 +95,5 @@ async def delete_chat(
         )
     )
     await db.commit()
-    if result.rowcount == 0: # type: ignore
+    if result.rowcount == 0:  # type: ignore
         raise HTTPException(404, "Chat not found")

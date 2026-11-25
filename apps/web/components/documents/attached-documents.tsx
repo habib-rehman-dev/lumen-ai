@@ -5,6 +5,7 @@ import { FileText, Plus, X } from "lucide-react";
 import { useDocumentSelection } from "@/components/documents/selection-provider";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import { useState } from "react";
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
@@ -14,7 +15,7 @@ import { useDocuments } from "@/hooks/use-documents";
 export function AttachedDocuments() {
     const { data: docs } = useDocuments();
     const { isSelected, toggle } = useDocumentSelection();
-
+    const [open, setOpen] = useState(false);
     // Only ready documents can be searched
     const ready = (docs ?? []).filter((d) => d.status === "ready");
     if (ready.length === 0) return null;
@@ -47,19 +48,32 @@ export function AttachedDocuments() {
             {/* Re-attach a document you removed */}
             {detached.length > 0 && (
                 <DropdownMenu>
-                    <DropdownMenuTrigger render={() => (<Button variant="ghost" size="sm" className="h-6 gap-1 px-2 text-xs">
-                        <Plus className="size-3" /> Add
-                    </Button>
+  <DropdownMenuTrigger
+    render={(props) => (
+      <Button
+        {...props}
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="h-6 gap-1 px-2 text-xs"
+      >
+        <Plus className="size-3" /> Add
+      </Button>
+    )}
+  />
 
-                    )} />
-                    <DropdownMenuContent align="start">
-                        {detached.map((doc) => (
-                            <DropdownMenuItem key={doc.id} onSelect={() => toggle(doc.id)}>
-                                <FileText /> <span className="truncate">{doc.filename}</span>
-                            </DropdownMenuItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+  <DropdownMenuContent align="start">
+    {detached.map((doc) => (
+      <DropdownMenuItem
+        key={doc.id}
+        onClick={() => toggle(doc.id)}
+      >
+        <FileText />
+        <span className="truncate">{doc.filename}</span>
+      </DropdownMenuItem>
+    ))}
+  </DropdownMenuContent>
+</DropdownMenu>
             )}
         </div>
     );
