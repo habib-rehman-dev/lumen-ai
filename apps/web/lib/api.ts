@@ -66,3 +66,18 @@ export const deleteChat = async (id: string) => {
   await check(await fetch(`/api/chats/${id}`, { method: "DELETE" }));
 };
 
+
+
+export const updateChat = async (
+  id: string,
+  patch: { pinned?: boolean; title?: string },
+): Promise<ChatSummary> =>
+  (
+    await check(
+      await fetch(`/api/chats/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch),
+      }),
+    )
+  ).json();

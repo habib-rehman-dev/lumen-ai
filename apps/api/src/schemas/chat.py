@@ -55,5 +55,12 @@ class ChatSessionOut(BaseModel):
     document_ids: list[str] | None = None   # None = whole library
     created_at: datetime
     updated_at: datetime
+    pinned: bool = False
 class ChatSessionDetail(ChatSessionOut):
     messages: list[MessageOut]
+
+
+class ChatPatch(BaseModel):
+    """Both fields optional: send only what changes."""
+    pinned: bool | None = None
+    title: str | None = Field(default=None, min_length=1, max_length=80)

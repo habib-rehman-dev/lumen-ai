@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { deleteChat, getChat, listChats } from "@/lib/api";
+import { deleteChat, getChat, listChats, updateChat } from "@/lib/api";
 import { qk } from "@/lib/query-keys";
 
 // Sidebar list of chats
@@ -29,3 +29,12 @@ export function useDeleteChat() {
   });
 }
 
+
+export function useUpdateChat() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, patch }: { id: string; patch: { pinned?: boolean; title?: string } }) =>
+      updateChat(id, patch),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.chats }),
+  });
+}

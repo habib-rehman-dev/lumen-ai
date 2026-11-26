@@ -11,7 +11,7 @@ from src.core.db import get_db
 from src.core.security import CurrentUserId
 from src.documents.service import owned_document_ids, resolve_searchable_ids
 from src.models import ChatSession, Message
-from src.schemas.chat import ChatRequest, ChatSessionDetail, ChatSessionOut
+from src.schemas.chat import ChatPatch, ChatRequest, ChatSessionDetail, ChatSessionOut
 
 settings = get_settings()
 router = APIRouter(tags=["chat"])
@@ -106,3 +106,20 @@ async def delete_chat(
     await db.commit()
     if result.rowcount == 0:  # type: ignore
         raise HTTPException(404, "Chat not found")
+
+
+@router.patch("/chats/{chat_id}", response_model=ChatSessionOut)
+async def update_chat(
+    chat_id: uuid.UUID,
+    body: ChatPatch,
+    user_id: CurrentUserId,
+    db: AsyncSession = Depends(get_db),
+):
+    chat = await get_owned_session(db, user_id, chat_id)  # 404 for other people's chats
+    if body.pinned is not None:
+        chat.pinned = body.pinned
+    if body.title is not None:
+        chat.title = body.title.strip()
+    await db.commit()
+    await db.refresh(chat)  # reload updated_at, which the database bumps
+    return chat
