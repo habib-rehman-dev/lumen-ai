@@ -3,6 +3,7 @@ import logging
 import uuid
 
 from src.core.db import SessionLocal
+from src.documents.storage import cleanup_ingestion_file, materialize_for_ingestion
 from src.models import Document, DocumentStatus
 from src.rag.ingest import IngestionError, ingest_file
 from src.rag.store import delete_document_vectors
@@ -19,14 +20,22 @@ async def ingest_document(document_id: uuid.UUID) -> None:
 
         error: str | None = None
         try:
-            # Heavy work runs in a thread so the API stays responsive
-            await asyncio.to_thread(
-                ingest_file,
-                path=doc.storage_path,
-                user_id=doc.user_id,
-                document_id=str(doc.id),
-                filename=doc.filename,
+            local_path = await asyncio.to_thread(
+                materialize_for_ingestion, doc.storage_path
             )
+            try:
+                # Heavy work runs in a thread so the API stays responsive
+                await asyncio.to_thread(
+                    ingest_file,
+                    path=str(local_path),
+                    user_id=doc.user_id,
+                    document_id=str(doc.id),
+                    filename=doc.filename,
+                )
+            finally:
+                await asyncio.to_thread(
+                    cleanup_ingestion_file, doc.storage_path, local_path
+                )
         except IngestionError as exc:
             error = str(exc)  # safe, user-facing message
         except Exception:

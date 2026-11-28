@@ -5,7 +5,16 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
+      "env":[
+        "BACKEND_URL",
+        "DEV_USER_ID",
+        "BACKEND_JWT_SECRET",
+        "AUTH_SECRET",
+        "AUTH_GITHUB_ID",
+        "AUTH_GITHUB_SECRET",
+        "INTERNAL_API_KEY"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

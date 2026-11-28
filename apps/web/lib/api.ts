@@ -18,7 +18,10 @@ export type Citation = {
 };
 
 export type ChatSummary = {
-  id: string; title: string; created_at: string; updated_at: string;
+  id: string;
+  title: string;
+  pinned?: boolean;
+  created_at: string; updated_at: string;
   document_ids: string[] | null;   // null = this chat uses the whole library
 };
 export type ChatDetail = ChatSummary & {

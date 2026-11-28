@@ -4,13 +4,14 @@ import { Loader2, Plus, UploadCloud, FileText } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@workspace/ui/components/button";
+import { buttonVariants } from "@workspace/ui/components/button";
 import {
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem,
     DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import { useDocuments, useUploadDocument } from "@/hooks/use-documents";
 import { ACCEPT_EXTENSIONS, validateUpload } from "@/lib/upload-rules";
+import { cn } from "@workspace/ui/lib/utils";
 
 type Props = {
     attachedIds: string[] | null;
@@ -54,22 +55,18 @@ export function AttachMenu({ attachedIds, onAttach }: Props) {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger
-                    render={(props) => (
-                        <Button
-                            {...props}
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="size-8 rounded-full"
-                            aria-label="Attach a document"
-                            disabled={upload.isPending}
-                        >
-                            {upload.isPending
-                                ? <Loader2 className="size-4 animate-spin" />
-                                : <Plus className="size-4" />}
-                        </Button>
+                    type="button"
+                    aria-label="Attach a document"
+                    disabled={upload.isPending}
+                    className={cn(
+                        buttonVariants({ variant: "ghost", size: "icon" }),
+                        "rounded-full",
                     )}
-                />
+                >
+                    {upload.isPending
+                        ? <Loader2 className="size-4 animate-spin" />
+                        : <Plus className="size-4" />}
+                </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" side="top" className="w-64">
                     <DropdownMenuItem onClick={() => inputRef.current?.click()}>
                         <UploadCloud /> Upload from device
@@ -77,7 +74,9 @@ export function AttachMenu({ attachedIds, onAttach }: Props) {
                     {choices.length > 0 && (
                         <>
                             <DropdownMenuSeparator />
-                            <DropdownMenuLabel>From your library</DropdownMenuLabel>
+                            <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                                From your library
+                            </div>
                             <div className="max-h-56 overflow-y-auto">
                                 {choices.map((doc) => (
                                     <DropdownMenuItem

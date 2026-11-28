@@ -1,5 +1,7 @@
 from functools import lru_cache
+from typing import Literal
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,6 +21,9 @@ class Settings(BaseSettings):
     upload_dir: str = "./data/uploads"
     chroma_path: str = "./data/chroma"
     max_upload_mb: int = 25
+    storage_backend: Literal["local", "s3"] = "local"
+    s3_bucket_name: str | None = None
+    aws_region: str = "ap-southeast-2"
 
     # Local embedding model (Groq has no embeddings)
     embedding_model: str = "BAAI/bge-small-en-v1.5"
@@ -54,6 +59,13 @@ class Settings(BaseSettings):
 
     # Maximum number of characters allowed in a question
     MAX_QUESTION_CHARS: int = 8000
+
+    @model_validator(mode="after")
+    def validate_storage_backend(self) -> "Settings":
+        if self.storage_backend == "s3" and not self.s3_bucket_name:
+            raise ValueError("S3_BUCKET_NAME is required when STORAGE_BACKEND=s3")
+        return self
+
 
 @lru_cache  # build Settings once, reuse everywhere
 def get_settings() -> Settings:
