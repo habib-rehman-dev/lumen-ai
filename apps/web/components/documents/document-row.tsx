@@ -7,17 +7,33 @@ import { toast } from "sonner";
 import { StatusBadge } from "@/components/documents/status-badge";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Button } from "@workspace/ui/components/button";
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { useDeleteDocument } from "@/hooks/use-documents";
 import type { DocumentItem } from "@/lib/api";
 import { formatBytes } from "@/lib/format";
 
-export function DocumentRow({ doc }: { doc: DocumentItem }) {
+type Props = {
+  doc: DocumentItem;
+  selected?: boolean;
+  onToggleSelection?: () => void;
+};
+
+export function DocumentRow({ doc, selected = false, onToggleSelection }: Props) {
   const del = useDeleteDocument();
   const [confirming, setConfirming] = useState(false);
 
   return (
     <li className="flex items-start gap-3 rounded-lg border p-3">
+      {onToggleSelection && (
+        <Checkbox
+          checked={selected}
+          disabled={doc.status !== "ready"}
+          aria-label={`Select ${doc.filename} for this chat`}
+          className="mt-1"
+          onCheckedChange={() => onToggleSelection()}
+        />
+      )}
       <FileText className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
 
       <div className="min-w-0 flex-1">

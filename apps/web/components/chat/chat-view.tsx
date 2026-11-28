@@ -32,7 +32,11 @@ export function ChatView({ chatId, title, initialMessages, initialScope = null }
   const qc = useQueryClient();
   const pathname = usePathname();
   const { data: docs } = useDocuments();
-  const scope = useChatScope(initialScope);
+  const readyDocumentIds = useMemo(
+    () => (docs ?? []).filter((doc) => doc.status === "ready").map((doc) => doc.id),
+    [docs],
+  );
+  const scope = useChatScope(initialScope, readyDocumentIds);
 
   const docMap = useMemo(() => new Map((docs ?? []).map((d) => [d.id, d])), [docs]);
 
@@ -78,8 +82,13 @@ export function ChatView({ chatId, title, initialMessages, initialScope = null }
   return (
     <div className="flex h-svh flex-col">
       <AppHeader title={title}>
-  <DocumentsSheet />
-</AppHeader>
+        <DocumentsSheet
+          selectedIds={scope.ids}
+          onToggle={scope.toggle}
+          onSelectAll={scope.selectAll}
+          onSelectNone={scope.selectNone}
+        />
+      </AppHeader>
 
       {chat.messages.length === 0 ? (
         <EmptyState hasDocs={hasDocs} onPick={(text) => chat.sendMessage({ text })} />

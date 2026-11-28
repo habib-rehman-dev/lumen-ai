@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthResult } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -11,7 +11,7 @@ export const enabledProviders = [
   ...(process.env.AUTH_GOOGLE_ID ? [{ id: "google", name: "Google" }] : []),
 ];
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const nextAuth = NextAuth({
   providers: [
     // Email + password: Auth.js asks FastAPI whether the credentials are right
     Credentials({
@@ -54,3 +54,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
 });
+
+export const { handlers, signIn, signOut } = nextAuth;
+export const auth: NextAuthResult["auth"] = nextAuth.auth;

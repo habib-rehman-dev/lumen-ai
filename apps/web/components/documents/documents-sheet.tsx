@@ -3,7 +3,6 @@
 import { FileText } from "lucide-react";
 
 import { DocumentRow } from "@/components/documents/document-row";
-import { useDocumentSelection } from "@/components/documents/selection-provider";
 import { UploadDropzone } from "@/components/documents/upload-dropzone";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
@@ -14,9 +13,27 @@ import {
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { useDocuments } from "@/hooks/use-documents";
 import { useState } from "react";
-export function DocumentsSheet() {
+
+type Props = {
+    selectedIds: string[] | null;
+    onToggle: (id: string) => void;
+    onSelectAll: () => void;
+    onSelectNone: () => void;
+};
+
+export function DocumentsSheet({
+    selectedIds,
+    onToggle,
+    onSelectAll,
+    onSelectNone,
+}: Props) {
     const [open, setOpen] = useState(false);
-    const { selectedCount } = useDocumentSelection();
+    const { data: docs } = useDocuments();
+    const ready = (docs ?? []).filter((doc) => doc.status === "ready");
+    const selectedCount =
+        selectedIds === null
+            ? ready.length
+            : ready.filter((doc) => selectedIds.includes(doc.id)).length;
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -41,15 +58,29 @@ export function DocumentsSheet() {
                     <SheetTitle>Documents</SheetTitle>
                     <SheetDescription>Choose which files the assistant can search.</SheetDescription>
                 </SheetHeader>
-                <DocumentsPanel />
+                <DocumentsPanel
+                    selectedIds={selectedIds}
+                    onToggle={onToggle}
+                    onSelectAll={onSelectAll}
+                    onSelectNone={onSelectNone}
+                />
             </SheetContent>
         </Sheet>
     );
 }
 
-function DocumentsPanel() {
+function DocumentsPanel({
+    selectedIds,
+    onToggle,
+    onSelectAll,
+    onSelectNone,
+}: Props) {
     const { data: docs, isLoading, isError } = useDocuments();
-    const { selectAll, selectNone, selectedCount } = useDocumentSelection();
+    const ready = (docs ?? []).filter((doc) => doc.status === "ready");
+    const selectedCount =
+        selectedIds === null
+            ? ready.length
+            : ready.filter((doc) => selectedIds.includes(doc.id)).length;
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-3 px-4 pb-4">
@@ -59,8 +90,8 @@ function DocumentsPanel() {
                 <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{selectedCount} selected</span>
                     <div className="flex gap-1">
-                        <Button variant="ghost" size="sm" onClick={selectAll}>Select all</Button>
-                        <Button variant="ghost" size="sm" onClick={selectNone}>Clear</Button>
+                        <Button variant="ghost" size="sm" onClick={onSelectAll}>Select all</Button>
+                        <Button variant="ghost" size="sm" onClick={onSelectNone}>Clear</Button>
                     </div>
                 </div>
             )}
@@ -81,7 +112,14 @@ function DocumentsPanel() {
                     </p>
                 )}
                 <ul className="space-y-2">
-                    {docs?.map((doc) => <DocumentRow key={doc.id} doc={doc} />)}
+                    {docs?.map((doc) => (
+                        <DocumentRow
+                            key={doc.id}
+                            doc={doc}
+                            selected={selectedIds === null || selectedIds.includes(doc.id)}
+                            onToggleSelection={() => onToggle(doc.id)}
+                        />
+                    ))}
                 </ul>
             </ScrollArea>
         </div>
